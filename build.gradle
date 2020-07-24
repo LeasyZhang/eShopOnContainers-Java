@@ -1,0 +1,92 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group = 'com.eshop'
+version = '1.0.0-SNAPSHOT'
+description = 'root'
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    group = rootProject.group
+    version = rootProject.version
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    configurations.all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+
+    ext {
+        springBootVersion = '2.2.2.RELEASE'
+        powermockVersion = '2.0.2'
+        jerseyVersion = '2.27'
+        feignVersion = '8.18.0'
+        jsonwebtokenVersion = '0.10.5'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        }
+
+        dependencies {
+
+            // commons
+            dependency 'commons-lang:commons-lang:2.6'
+            dependency 'com.google.guava:guava:28.1-jre'
+
+            //cache
+            dependency 'com.github.ben-manes.caffeine:caffeine:2.8.1'
+            dependency 'org.redisson:redisson-spring-boot-starter:3.12.5'
+
+            //authentication
+            dependency group: 'io.jsonwebtoken', name: 'jjwt-api', version: "$jsonwebtokenVersion"
+            dependency group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: "$jsonwebtokenVersion"
+            dependency group: 'io.jsonwebtoken', name: 'jjwt-impl', version: "$jsonwebtokenVersion"
+
+            //serialize
+            dependency group: 'com.google.protobuf', name: 'protobuf-java', version: '3.11.4'
+            dependency group: 'com.google.guava', name: 'guava-testlib', version: '28.1-jre'
+
+            //aws
+            dependency group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.818'
+            dependency group: 'com.amazonaws', name: 'aws-java-sdk-sts', version: '1.11.818'
+            dependency group: 'com.amazonaws', name: 'amazon-sqs-java-messaging-lib', version: '1.0.8'
+        }
+    }
+
+    dependencies {
+        implementation('org.apache.logging.log4j:log4j-core')
+        implementation('org.apache.logging.log4j:log4j-api')
+        implementation group: 'org.slf4j', name: 'slf4j-api'
+
+        compileOnly group: 'org.projectlombok', name: 'lombok'
+        annotationProcessor group: 'org.projectlombok', name: 'lombok'
+
+        testImplementation group: 'org.projectlombok', name: 'lombok'
+        testImplementation group: 'junit', name: 'junit'
+        testImplementation 'org.mockito:mockito-core'
+    }
+}

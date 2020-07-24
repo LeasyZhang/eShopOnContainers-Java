@@ -1,0 +1,24 @@
+plugins {
+    id 'org.springframework.boot' version "$springBootVersion"
+}
+
+group 'com.eshop'
+version '1.0.0-SNAPSHOT'
+description = 'basket api'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+bootJar {
+    archiveBaseName.set('basket-api')
+    archiveVersion.set('1.0.0-SNAPSHOT')
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
