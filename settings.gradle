@@ -1,0 +1,3 @@
+rootProject.name = 'eShopOnContainers-Java'
+include 'Basket-API'
+
