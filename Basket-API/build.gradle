@@ -20,5 +20,6 @@ bootJar {
 }
 
 dependencies {
+    api('org.springframework.boot:spring-boot-starter-web')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
