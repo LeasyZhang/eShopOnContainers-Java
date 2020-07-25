@@ -40,9 +40,6 @@ subprojects {
 
     ext {
         springBootVersion = '2.2.2.RELEASE'
-        powermockVersion = '2.0.2'
-        jerseyVersion = '2.27'
-        feignVersion = '8.18.0'
         jsonwebtokenVersion = '0.10.5'
     }
 
