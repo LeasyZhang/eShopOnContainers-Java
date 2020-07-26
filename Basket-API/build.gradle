@@ -21,5 +21,7 @@ bootJar {
 
 dependencies {
     api('org.springframework.boot:spring-boot-starter-web')
+    api('org.springframework.boot:spring-boot-starter-data-redis')
+    api('redis.clients:jedis')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
