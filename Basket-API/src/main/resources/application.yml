@@ -1,2 +1,7 @@
 server:
   port: 8081
+
+spring:
+  redis:
+    prefix:
+      key: BasketAPI

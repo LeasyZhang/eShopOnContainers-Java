@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomerBasket {
 
-    public String buyerId;
+    private String buyerId;
 
-    public List<BasketItem> items;
+    private List<BasketItem> items;
 
     public CustomerBasket(String customerId) {
         this.buyerId = customerId;
