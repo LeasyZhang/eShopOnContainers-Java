@@ -28,7 +28,7 @@ public class BasketService {
             List<BasketItemDTO> basketItemDTOList = new ArrayList<>();
             for (BasketItem basketItem : item.getItems()) {
                 BasketItemDTO basketItemDTO = new BasketItemDTO();
-                BeanUtils.copyProperties(item, dto);
+                BeanUtils.copyProperties(basketItem, basketItemDTO);
                 basketItemDTOList.add(basketItemDTO);
             }
             dto.setBasketItems(basketItemDTOList);
