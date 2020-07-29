@@ -2,8 +2,8 @@ package com.eshop.api.basket.repo;
 
 import com.eshop.api.basket.model.CustomerBasket;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface BasketRepository {
     Optional<CustomerBasket> findByCustomerId(String customerId);
@@ -12,5 +12,5 @@ public interface BasketRepository {
 
     Boolean deleteBasketById(String id);
 
-    List<String> getUsers();
+    Set<String> getUsers();
 }
