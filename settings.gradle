@@ -1,3 +1,4 @@
 rootProject.name = 'eShopOnContainers-Java'
 include 'Basket-API'
+include 'Catalog-API'
 
