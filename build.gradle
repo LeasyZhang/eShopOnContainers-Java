@@ -41,6 +41,7 @@ subprojects {
     ext {
         springBootVersion = '2.2.2.RELEASE'
         jsonwebtokenVersion = '0.10.5'
+        grpcVersion = '1.31.0'
     }
 
     dependencyManagement {
@@ -72,6 +73,12 @@ subprojects {
             dependency group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.818'
             dependency group: 'com.amazonaws', name: 'aws-java-sdk-sts', version: '1.11.818'
             dependency group: 'com.amazonaws', name: 'amazon-sqs-java-messaging-lib', version: '1.0.8'
+
+            //grpc
+            dependency "io.grpc:grpc-netty:${grpcVersion}"
+            dependency "io.grpc:grpc-protobuf:${grpcVersion}"
+            dependency "io.grpc:grpc-stub:${grpcVersion}"
+            dependency "io.grpc:grpc-services:${grpcVersion}"
         }
     }
 
