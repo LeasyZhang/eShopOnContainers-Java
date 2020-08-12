@@ -1,0 +1,25 @@
+version: "2.2"
+
+networks:
+  main-network:
+
+services:
+  basket-api:
+    build:
+      context: .
+    environment:
+      ACTIVE_PROFILE: prod
+    command: "/basket-api/start.sh"
+    ports:
+      - 8080:8080
+      - 8088:8088
+    volumes:
+      - ./tmp/docker/backend:/var/log/basket-api
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "curl -f http://localhost:8080/index || exit 1"
+      ]
+    networks:
+      - main-network
+    mem_limit: 900m
