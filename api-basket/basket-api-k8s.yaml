@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: basket-api-pod
+  labels:
+    api-name: basket-api
+spec:
+  containers:
+  - name: basket-api
+    image: basket-api:latest
+    command: ['sh', 'basket-api*.jar']
+    imagePullPolicy: Never
+    ports:
+    - name: string
+      containerPort: 8080
+      hostPort: 8081
