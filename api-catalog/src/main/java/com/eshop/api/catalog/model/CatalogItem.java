@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 public class CatalogItem {
-    public Integer id;
+    public Long id;
 
     public String name;
 
