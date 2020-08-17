@@ -51,6 +51,7 @@ public class CatalogController {
 
     @RequestMapping("")
     public List<CatalogItem> itemsByCatalogAndBrandId() {
+
         return new ArrayList<>();
     }
 }
