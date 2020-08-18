@@ -2,49 +2,65 @@ package com.eshop.api.catalog.model;
 
 import com.eshop.api.catalog.exception.CatalogDomainException;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
+@Entity
+@Table("catalog_item")
 public class CatalogItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
 
+    @Column(name = "name")
     public String name;
 
+    @Column(name = "description")
     public String description;
 
+    @Column(name = "price")
     public BigDecimal price;
 
+    @Column(name = "picture_file_name")
     public String pictureFileName;
 
+    @Column(name = "picture_uri")
     public String pictureUri;
 
-    public Integer catalogTypeId;
+    @Column(name = "catalog_type_id")
+    public Long catalogTypeId;
 
-    public CatalogType catalogType;
+    @Column(name = "catalog_type")
+    public String catalogType;
 
-    public Integer catalogBrandId;
+    @Column(name = "catalog_brand_id")
+    public Long catalogBrandId;
 
-    public CatalogBrand catalogBrand;
+    @Column(name = "catalog_brand")
+    public String catalogBrand;
 
     // Quantity in stock
+    @Column(name = "available_stock")
     public Integer availableStock;
 
     // Available stock at which we should reorder
+    @Column(name = "restock_threshold")
     public Integer restockThreshold;
 
-
     // Maximum number of units that can be in-stock at any time (due to physicial/logistical constraints in warehouses)
+    @Column(name = "max_stock_threshold")
     public Integer maxStockThreshold;
 
     /// <summary>
     /// True if item is on reorder
     /// </summary>
+    @Column(name = "on_reorder")
     public Boolean onReorder;
-
-    public CatalogItem() {
-
-    }
 
 
     /// <summary>
@@ -95,5 +111,9 @@ public class CatalogItem {
         this.onReorder = false;
 
         return this.availableStock - original;
+    }
+
+    public void fillImageUrl(String imageBaseUrl) {
+        this.pictureUri = imageBaseUrl + this.id;
     }
 }

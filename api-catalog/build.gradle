@@ -87,10 +87,14 @@ dependencyManagement {
         dependency "io.grpc:grpc-protobuf:${grpcVersion}"
         dependency "io.grpc:grpc-stub:${grpcVersion}"
         dependency "io.grpc:grpc-services:${grpcVersion}"
+
+        dependency group: 'org.postgresql', name: 'postgresql', version: '42.2.15'
+
     }
 }
 
 dependencies {
+    implementation('org.postgresql:postgresql')
     implementation('org.apache.logging.log4j:log4j-core')
     implementation('org.apache.logging.log4j:log4j-api')
     implementation group: 'org.slf4j', name: 'slf4j-api'

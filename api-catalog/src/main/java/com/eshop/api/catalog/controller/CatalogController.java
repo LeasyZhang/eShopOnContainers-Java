@@ -1,57 +1,96 @@
 package com.eshop.api.catalog.controller;
 
 import com.eshop.api.catalog.model.CatalogItem;
-import com.eshop.api.catalog.repo.CatalogBrandRepo;
 import com.eshop.api.catalog.repo.CatalogItemRepo;
-import com.eshop.api.catalog.repo.CatalogTypeRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/catalog")
 @RequiredArgsConstructor
+@Slf4j
 public class CatalogController {
 
-    private final CatalogBrandRepo catalogBrandRepo;
     private final CatalogItemRepo catalogItemRepo;
-    private final CatalogTypeRepo catalogTypeRepo;
+
+    @Value("${picServer.baseUrl}")
+    private String imageServerUrl;
 
     @RequestMapping("/items")
-    public ResponseEntity<Page<CatalogItem>> getItems(@RequestBody(required = false) List<Long> idList, @RequestParam Integer pageSize, @RequestParam Integer pageIndex) {
-        if (!CollectionUtils.isEmpty(idList)) {
-            List<CatalogItem> itemList = (List<CatalogItem>) catalogItemRepo.findAllById(idList);
+    public ResponseEntity<Page<CatalogItem>> getItems(@RequestBody(required = false) String idList, @RequestParam Integer pageSize, @RequestParam Integer pageIndex) {
+        if (pageIndex < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Bad request param pageIndex " + pageIndex + " pageSize " + pageSize);
+        }
+        List<Long> itemIdList = new ArrayList<>();
+        if (!StringUtils.isEmpty(idList)) {
+            String[] idListStr = idList.split(",");
+            for (String str : idListStr) {
+                itemIdList.add(Long.valueOf(str));
+            }
+        }
+        if (!CollectionUtils.isEmpty(itemIdList)) {
+            List<CatalogItem> itemList = (List<CatalogItem>) catalogItemRepo.findAllById(itemIdList);
             if (CollectionUtils.isEmpty(itemList)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Page.empty());
             }
-            PageImpl<CatalogItem> pageResult = new PageImpl<CatalogItem>(itemList, PageRequest.of(0, itemList.size()), itemList.size());
+            itemList.stream().forEach(item -> item.fillImageUrl(imageServerUrl));
+            PageImpl<CatalogItem> pageResult = new PageImpl<>(itemList, PageRequest.of(0, itemList.size(), Sort.by("name").ascending()), itemList.size());
             return ResponseEntity.ok(pageResult);
         }
 
-        return ResponseEntity.ok(catalogItemRepo.findAll(PageRequest.of(pageIndex - 1, pageSize)));
+        Page<CatalogItem> pageResult = catalogItemRepo.findAll(PageRequest.of(pageIndex - 1, pageSize, Sort.by("name").ascending()));
+        pageResult.get().forEach(item -> item.fillImageUrl(imageServerUrl));
+        return ResponseEntity.ok(pageResult);
     }
 
     @RequestMapping("/item/{id}")
-    public CatalogItem getItemById(@PathVariable("id") Integer id) {
-        return new CatalogItem();
+    public CatalogItem getItemById(@PathVariable("id") Long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Bad request id " + id);
+        }
+        Optional<CatalogItem> catalogItem = catalogItemRepo.findById(id);
+        return catalogItem.map(item -> {
+            item.fillImageUrl(imageServerUrl);
+            return item;
+        }).orElseGet(() -> {
+            log.info("No result found for {}", id);
+            return new CatalogItem();
+        });
     }
 
     @RequestMapping("/items/withname/{name}")
-    public List<CatalogItem> itemsWithName(@PathVariable("name") String name) {
-        return new ArrayList<>();
+    public ResponseEntity<Page<CatalogItem>> itemsWithName(@PathVariable("name") String name, @RequestParam Integer pageSize, @RequestParam Integer pageIndex) {
+        if (pageIndex < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Bad request param pageIndex " + pageIndex + " pageSize " + pageSize);
+        }
+        Page<CatalogItem> itemPage = catalogItemRepo.findAllByNameStartingWith(name, PageRequest.of(pageIndex - 1, pageSize));
+        itemPage.get().forEach(item -> item.fillImageUrl(imageServerUrl));
+        return ResponseEntity.ok(itemPage);
     }
 
-    @RequestMapping("")
-    public List<CatalogItem> itemsByCatalogAndBrandId() {
-
-        return new ArrayList<>();
+    @RequestMapping("items/type/{catalogTypeId}/brand/{catalogBrandId}")
+    public ResponseEntity<Page<CatalogItem>> itemsByCatalogAndBrandId(@PathVariable("catalogTypeId") Long catalogTypeId,
+                                                                      @PathVariable("catalogBrandId") Long catalogBrandId,
+                                                                      @RequestParam Integer pageSize, @RequestParam Integer pageIndex) {
+        if (pageIndex < 1 || pageSize < 1) {
+            throw new IllegalArgumentException("Bad request param pageIndex " + pageIndex + " pageSize " + pageSize);
+        }
+        Page<CatalogItem> items = catalogItemRepo.findAllByCatalogTypeIdAndCatalogBrandId(catalogTypeId, catalogBrandId, PageRequest.of(pageIndex - 1, pageSize, Sort.by("name").ascending()));
+        items.get().forEach(item -> item.fillImageUrl(imageServerUrl));
+        return ResponseEntity.ok(items);
     }
 }
