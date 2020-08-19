@@ -1,0 +1,15 @@
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/eshop"
+    username: joe.zhang
+    password:
+server:
+  port: 8084
+
+picServer:
+  baseUrl: localhost://image-server
