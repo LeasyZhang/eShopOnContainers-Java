@@ -77,7 +77,7 @@ public class CatalogController {
         });
     }
 
-    @@GetMapping("items/withname/{name}")
+    @GetMapping("items/withname/{name}")
     public ResponseEntity<Page<CatalogItem>> itemsWithName(@PathVariable("name") String name, @RequestParam Integer pageSize, @RequestParam Integer pageIndex) {
         if (pageIndex < 1 || pageSize < 1) {
             throw new IllegalArgumentException("Bad request param pageIndex " + pageIndex + " pageSize " + pageSize);
