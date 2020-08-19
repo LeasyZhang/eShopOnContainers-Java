@@ -14,4 +14,6 @@ public interface CatalogItemRepo extends PagingAndSortingRepository<CatalogItem,
     Page<CatalogItem> findAllByNameStartingWith(String name, Pageable pageable);
 
     Page<CatalogItem> findAllByCatalogTypeIdAndCatalogBrandId(Long catalogTypeId, Long catalogBrandId, Pageable pageable);
+
+    Page<CatalogItem> findALlByCatalogBrandId(Long catalogBrandId, Pageable pageable);
 }

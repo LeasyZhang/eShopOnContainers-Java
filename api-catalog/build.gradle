@@ -90,6 +90,11 @@ dependencyManagement {
 
         dependency group: 'org.postgresql', name: 'postgresql', version: '42.2.15'
 
+        dependency 'io.springfox:springfox-swagger2:2.9.2'
+        dependency 'io.springfox:springfox-swagger-ui:2.9.2'
+
+        dependency group: 'commons-io', name: 'commons-io', version: '2.7'
+
     }
 }
 
@@ -107,6 +112,10 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('redis.clients:jedis')
+
+    api('io.springfox:springfox-swagger2')
+    api('io.springfox:springfox-swagger-ui')
+    api('commons-io:commons-io')
 
     compileOnly group: 'org.projectlombok', name: 'lombok'
     annotationProcessor group: 'org.projectlombok', name: 'lombok'
