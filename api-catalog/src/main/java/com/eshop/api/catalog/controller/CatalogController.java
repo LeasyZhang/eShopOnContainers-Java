@@ -131,7 +131,7 @@ public class CatalogController {
                 //raise event
             }
             return catalogItemRepo.save(itemToUpdate);
-        }).orElseThrow(CatalogItemNotFoundException::new));
+        }).orElseThrow(() -> new CatalogItemNotFoundException("Item not found for " + itemToUpdate.getId())));
     }
 
     @PostMapping("items")
@@ -146,7 +146,7 @@ public class CatalogController {
         return product.map(item -> {
             catalogItemRepo.deleteById(itemId);
             return ResponseEntity.ok("Success");
-        }).orElseThrow(CatalogItemNotFoundException::new);
+        }).orElseThrow(() -> new CatalogItemNotFoundException("Item not found for " + itemId));
     }
 
 }
