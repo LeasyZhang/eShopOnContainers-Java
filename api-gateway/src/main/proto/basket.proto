@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "com.eshop.api.basket";
+option java_package = "com.eshop.api.gateway";
 
 package BasketApi;
 

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,11 @@ public class BasketGrpcService extends BasketGrpc.BasketImplBase {
     @Override
     public void getBasketById(BasketOuterClass.BasketRequest request, StreamObserver<BasketOuterClass.CustomerBasketResponse> responseObserver) {
         log.info("Begin GRPC call from method {} for basket id {}", "GetBasketById", request.getId());
-        CustomerBasketDTO customerBasket = basketService.getBasketByCustomerId(request.getId());
+        String customerId = StringUtils.replace(request.getId(), "\n", "");
+        CustomerBasketDTO customerBasket = basketService.getBasketByCustomerId(customerId);
         BasketOuterClass.CustomerBasketResponse reply;
 
-        if (customerBasket != null) {
+        if (customerBasket != null && !StringUtils.isEmpty(customerBasket.getBuyerId())) {
             reply = mapDtoToResponse(customerBasket);
         } else {
             reply = BasketOuterClass.CustomerBasketResponse.newBuilder().build();
@@ -69,12 +71,12 @@ public class BasketGrpcService extends BasketGrpc.BasketImplBase {
             responses = itemList.stream().map(item -> {
                 BasketOuterClass.BasketItemResponse basketItemResponse = BasketOuterClass.BasketItemResponse.newBuilder()
                         .setId(item.getId())
-                        .setOldunitprice(item.getOldUnitPrice().doubleValue())
+                        .setOldunitprice(item.getOldUnitPrice())
                         .setPictureurl(item.getPictureUrl())
                         .setProductid(item.getProductId())
                         .setProductname(item.getProductName())
                         .setQuantity(item.getQuantity())
-                        .setUnitprice(item.getUnitPrice().doubleValue())
+                        .setUnitprice(item.getUnitPrice())
                         .build();
                 return basketItemResponse;
             }).collect(Collectors.toList());
