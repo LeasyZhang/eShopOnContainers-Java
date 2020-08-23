@@ -1,11 +1,9 @@
-package com.eshop.api.basket.model;
+package com.eshop.api.gateway.dto;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
-public class BasketItem {
+public class BasketItemDTO {
 
     public String id;
     public int productId;

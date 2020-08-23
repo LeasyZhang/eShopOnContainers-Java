@@ -10,8 +10,8 @@ public class BasketItemDTO {
     public String id;
     public int productId;
     public String productName;
-    public BigDecimal unitPrice;
-    public BigDecimal oldUnitPrice;
+    public Double unitPrice;
+    public Double oldUnitPrice;
     public int quantity;
     public String pictureUrl;
 }
