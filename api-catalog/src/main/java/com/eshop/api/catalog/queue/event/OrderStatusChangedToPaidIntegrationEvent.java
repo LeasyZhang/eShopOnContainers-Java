@@ -7,7 +7,7 @@ import java.util.Collection;
 
 @Getter
 @RequiredArgsConstructor
-public class OrderStatusChangedToAwaitingValidationIntegrationEvent extends IntegrationEvent{
+public class OrderStatusChangedToPaidIntegrationEvent extends IntegrationEvent{
 
     private int orderId;
     private Collection<OrderStockItem> orderStockItems;
