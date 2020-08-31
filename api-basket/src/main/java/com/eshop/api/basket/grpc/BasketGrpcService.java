@@ -2,9 +2,9 @@ package com.eshop.api.basket.grpc;
 
 import com.eshop.api.basket.BasketGrpc;
 import com.eshop.api.basket.BasketOuterClass;
-import com.eshop.api.basket.dto.BasketItemDTO;
-import com.eshop.api.basket.dto.CustomerBasketDTO;
-import com.eshop.api.basket.service.BasketService;
+import com.eshop.api.basket.model.BasketItem;
+import com.eshop.api.basket.model.CustomerBasket;
+import com.eshop.api.basket.repo.BasketRepository;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 @GrpcService
 public class BasketGrpcService extends BasketGrpc.BasketImplBase {
 
-    private final BasketService basketService;
+    private final BasketRepository basketRepository;
 
     @Override
     public void getBasketById(BasketOuterClass.BasketRequest request, StreamObserver<BasketOuterClass.CustomerBasketResponse> responseObserver) {
         log.info("Begin GRPC call from method {} for basket id {}", "GetBasketById", request.getId());
         String customerId = StringUtils.replace(request.getId(), "\n", "");
-        CustomerBasketDTO customerBasket = basketService.getBasketByCustomerId(customerId);
+        CustomerBasket customerBasket = basketRepository.findByCustomerId(customerId);
         BasketOuterClass.CustomerBasketResponse reply;
 
         if (customerBasket != null && !StringUtils.isEmpty(customerBasket.getBuyerId())) {
@@ -45,26 +45,26 @@ public class BasketGrpcService extends BasketGrpc.BasketImplBase {
     @Override
     public void updateBasket(BasketOuterClass.CustomerBasketRequest request, StreamObserver<BasketOuterClass.CustomerBasketResponse> responseObserver) {
 
-        CustomerBasketDTO toBeUpdated = new CustomerBasketDTO();
+        CustomerBasket toBeUpdated = new CustomerBasket();
         toBeUpdated.setBuyerId(request.getBuyerid());
-        List<BasketItemDTO> basketItemList = new ArrayList<>();
+        List<BasketItem> basketItemList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(request.getItemsList())) {
             request.getItemsList().stream().forEach(requestItem -> {
-                BasketItemDTO basketItemDTO = new BasketItemDTO();
-                BeanUtils.copyProperties(requestItem, basketItemDTO);
-                basketItemList.add(basketItemDTO);
+                BasketItem basketItem = new BasketItem();
+                BeanUtils.copyProperties(requestItem, basketItem);
+                basketItemList.add(basketItem);
             });
         }
-        toBeUpdated.setBasketItems(basketItemList);
-        CustomerBasketDTO updateResponse = basketService.updateBasket(toBeUpdated);
+        toBeUpdated.setItems(basketItemList);
+        CustomerBasket updateResponse = basketRepository.updateBasket(toBeUpdated);
 
         BasketOuterClass.CustomerBasketResponse reply = mapDtoToResponse(updateResponse);
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
     }
 
-    private BasketOuterClass.CustomerBasketResponse mapDtoToResponse(CustomerBasketDTO customerBasket) {
-        List<BasketItemDTO> itemList = customerBasket.getBasketItems();
+    private BasketOuterClass.CustomerBasketResponse mapDtoToResponse(CustomerBasket customerBasket) {
+        List<BasketItem> itemList = customerBasket.getItems();
         List<BasketOuterClass.BasketItemResponse> responses = new ArrayList<>();
 
         if (!CollectionUtils.isEmpty(itemList)) {

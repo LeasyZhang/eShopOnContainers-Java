@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -20,7 +19,7 @@ public class BasketRepositoryImpl implements BasketRepository {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public Optional<CustomerBasket> findByCustomerId(String customerId) {
+    public CustomerBasket findByCustomerId(String customerId) {
         CustomerBasket customerBasket;
         try {
             customerBasket = (CustomerBasket) redisTemplate.opsForValue().get(customerId);
@@ -28,13 +27,13 @@ public class BasketRepositoryImpl implements BasketRepository {
             log.warn("failed to parse customer basket for {}", customerId, e);
             throw new FormatException("Failed to parse customer basket for " + customerId);
         }
-        return Optional.ofNullable(customerBasket);
+        return customerBasket;
     }
 
     @Override
     public CustomerBasket updateBasket(CustomerBasket customerBasket) {
         redisTemplate.opsForValue().set(customerBasket.getBuyerId(), customerBasket);
-        return findByCustomerId(customerBasket.getBuyerId()).get();
+        return findByCustomerId(customerBasket.getBuyerId());
     }
 
     @Override
