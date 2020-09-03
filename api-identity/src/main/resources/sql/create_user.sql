@@ -1,0 +1,23 @@
+create table application_user (
+       id  bigserial not null,
+       card_holder_name varchar(255),
+       card_number varchar(255),
+       card_type integer,
+       city varchar(255),
+       country varchar(255),
+       email varchar(255),
+       expiration varchar(255),
+       last_name varchar(255),
+       name varchar(255),
+       phone_number varchar(255),
+       user_name varchar(255),
+        zip_code varchar(255),
+        state varchar(255),
+        street varchar(255),
+        security_number varchar(255),
+        normalized_email varchar(255),
+        normalized_user_name varchar(255),
+        security_stamp varchar(255),
+        create_time TIMESTAMP WITHOUT TIME ZONE,
+        update_time TIMESTAMP WITHOUT TIME ZONE
+);

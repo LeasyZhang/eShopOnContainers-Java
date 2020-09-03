@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table("user")
+@Table(name = "application_user")
 @Data
 public class SysUser {
 
