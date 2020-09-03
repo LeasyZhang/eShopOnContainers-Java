@@ -1,2 +1,13 @@
 server:
   port: 9002
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:3306/eshop?socketTimeout=90
+    username: root
+    password: 19950209
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 0
+      connection-timeout: 50000
