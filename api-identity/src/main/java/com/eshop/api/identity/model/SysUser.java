@@ -53,5 +53,4 @@ public class SysUser {
     private Instant createTime;
     @Column(name = "update_time")
     private Instant updateTime;
-
 }
