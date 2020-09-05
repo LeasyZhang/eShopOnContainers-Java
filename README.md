@@ -15,7 +15,7 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 | RPC | GRPC | 远程调用 |
 | 消息队列 | RabbitMQ |  |
 | 容器 | Docker |  |
-| 数据库 | MySQL |  |
+| 数据库 | PostgreSQL |  |
 | 服务发现 | Spring Cloud Consul |  |
 | 客户端负载均衡 | Spring Cloud Load Balancer |  |
 
