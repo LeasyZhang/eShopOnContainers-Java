@@ -4,7 +4,7 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 
 ## 技术栈替换
 
-.net版本的eShop使用的大多是.net相关的技术，使用的云服务是Azure。我打算用Java的技术栈重新实现一遍，主要是为了学习。
+.net版本的eShop使用的大多是.net相关的技术，使用的云服务是Azure。我打算用Spring的技术栈重新实现一遍，主要是为了学习。
 
 | 作用 | 框架 | 备注 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 
 ## 未来计划
 
-用kubernetes替代Spring Cloud.
+用kubernetes替代Spring Cloud.虽然两者可以共用，但是这样子kubernetes的服务发现等功能和Spring Cloud就重复了.
 
 ## 参考
 
