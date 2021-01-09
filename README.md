@@ -4,7 +4,7 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 
 ## 技术栈替换
 
-.net版本的eShop使用的大多是.net相关的技术，使用的云服务是Azure。我打算用Java的技术栈重新实现一遍，主要是为了学习。
+.net版本的eShop使用的大多是.net相关的技术，使用的云服务是Azure。我打算用Spring的技术栈重新实现一遍，主要是为了学习。
 
 | 作用 | Spring Cloud框架 | Kubernetes | 备注 |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 | RPC | GRPC | 远程调用 |
 | 消息队列 | RabbitMQ |  |
 | 容器 | Docker |  |
-| 数据库 | MySQL |  |
+| 数据库 | PostgreSQL |  |
 | 服务发现 | Spring Cloud Consul |  |
 | 客户端负载均衡 | Spring Cloud Load Balancer |  |
 
