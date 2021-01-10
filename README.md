@@ -6,22 +6,18 @@ Java 版本的 eShopOnContainers 基于 [dotnet ehop on containers](https://gith
 
 .net版本的eShop使用的大多是.net相关的技术，使用的云服务是Azure。我打算用Spring的技术栈重新实现一遍，主要是为了学习。
 
-| 作用 | 框架 | 备注 |
-| --- | --- | --- |
-| API gateway | Spring Cloud Gateway | 聚合API请求，统一认证 |
-| 远程配置 | Spring Cloud Config |  |
-| 调用链路追踪 | Spring Cloud Sleuth |  |
-| 断路器 | Spring Cloud Circuit Breaker |  |
-| RPC | GRPC | 远程调用 |
-| 消息队列 | RabbitMQ |  |
-| 容器 | Docker |  |
-| 数据库 | PostgreSQL |  |
-| 服务发现 | Spring Cloud Consul |  |
-| 客户端负载均衡 | Spring Cloud Load Balancer |  |
-
-## 未来计划
-
-用kubernetes替代Spring Cloud.虽然两者可以共用，但是这样子kubernetes的服务发现等功能和Spring Cloud就重复了.
+| 作用 | Spring Cloud框架 | Kubernetes | 备注 |
+| --- | --- | --- | --- |
+| API gateway | Spring Cloud Gateway | Ingress | 聚合API请求，统一认证 |
+| 远程配置 | Spring Cloud Config | ConfigMap |
+| 调用链路追踪 | Spring Cloud Sleuth | SkyWalking  |
+| 断路器 | Spring Cloud Circuit Breaker | Spring Cloud Circuit Breaker |
+| RPC | GRPC | GRPC | 远程调用 |
+| 消息队列 | RabbitMQ | RabbitMQ |
+| 容器 | Docker | Docker |
+| 数据库 | MySQL | MySQL |
+| 服务发现 | Spring Cloud Consul | Service |
+| 客户端负载均衡 | Spring Cloud Load Balancer | Ingress |
 
 ## 参考
 
